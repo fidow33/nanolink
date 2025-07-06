@@ -42,7 +42,7 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
               <img 
                 src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
                 alt="NanoLink Logo" 
-                className="w-6 h-6 brightness-0 invert"
+                className="w-6 h-6 object-contain brightness-0 invert"
               />
             </div>
             <div>

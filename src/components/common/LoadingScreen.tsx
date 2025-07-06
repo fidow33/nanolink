@@ -8,7 +8,7 @@ export default function LoadingScreen() {
           <img 
             src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
             alt="NanoLink Logo" 
-            className="w-16 h-16 animate-pulse"
+            className="w-16 h-16 object-contain animate-pulse"
           />
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">NanoLink</h1>

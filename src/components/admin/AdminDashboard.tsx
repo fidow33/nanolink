@@ -65,7 +65,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
           <img 
             src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
             alt="NanoLink Logo" 
-            className="w-8 h-8"
+            className="w-8 h-8 object-contain"
           />
           <div>
             <h1 className="text-2xl font-bold text-slate-900">NanoLink Admin</h1>

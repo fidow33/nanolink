@@ -85,7 +85,7 @@ export default function LoginScreen() {
             <img 
               src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
               alt="NanoLink Logo" 
-              className="w-16 h-16 mx-auto"
+              className="w-16 h-16 mx-auto object-contain"
             />
           </div>
           <h1 className="text-4xl font-bold text-white mb-3">NanoLink</h1>
@@ -419,11 +419,13 @@ export default function LoginScreen() {
           </div>
           <div className="text-white">
             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
-              <img 
-                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
-                alt="NanoLink" 
-                className="w-6 h-6 opacity-90"
-              />
+              <div className="w-6 h-6 bg-white rounded-md flex items-center justify-center">
+                <img 
+                  src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                  alt="NanoLink" 
+                  className="w-4 h-4 object-contain"
+                />
+              </div>
             </div>
             <p className="text-sm font-medium opacity-90">Instant Transfers</p>
           </div>
