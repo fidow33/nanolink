@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Send, Filter, Search } from 'lucide-react';
 import { useTransactions, Transaction } from '../../contexts/TransactionContext';
 
