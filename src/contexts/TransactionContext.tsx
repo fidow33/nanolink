@@ -1,72 +1,91 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
-
-export interface Transaction {
-  id: string;
-  type: 'buy' | 'sell' | 'send' | 'exchange';
-  amount: number;
-  currency: string;
-  toCurrency?: string;
-  toAmount?: number;
-  status: 'pending' | 'completed' | 'failed';
-  timestamp: Date;
-  paymentMethod?: string;
-}
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { apiClient } from '../lib/api';
+import type { Transaction } from '../lib/supabase';
 
 interface TransactionContextType {
   transactions: Transaction[];
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'timestamp'>) => void;
+  loading: boolean;
+  refreshTransactions: () => Promise<void>;
+  createOnRampTransaction: (data: {
+    fromAmount: number;
+    fromCurrency: string;
+    toCurrency: string;
+    paymentMethod: string;
+    mobileMoneyPhone?: string;
+  }) => Promise<Transaction>;
+  createOffRampTransaction: (data: {
+    fromAmount: number;
+    fromCurrency: string;
+    toCurrency: string;
+    paymentMethod: string;
+    recipientPhone: string;
+  }) => Promise<Transaction>;
 }
 
 const TransactionContext = createContext<TransactionContextType | undefined>(undefined);
 
 export function TransactionProvider({ children }: { children: ReactNode }) {
-  const [transactions, setTransactions] = useState<Transaction[]>([
-    {
-      id: '1',
-      type: 'buy',
-      amount: 100,
-      currency: 'KES',
-      toCurrency: 'USDT',
-      toAmount: 0.68,
-      status: 'completed',
-      timestamp: new Date(Date.now() - 86400000), // 1 day ago
-      paymentMethod: 'M-Pesa'
-    },
-    {
-      id: '2',
-      type: 'sell',
-      amount: 0.001,
-      currency: 'BTC',
-      toCurrency: 'KES',
-      toAmount: 6570,
-      status: 'completed',
-      timestamp: new Date(Date.now() - 172800000), // 2 days ago
-      paymentMethod: 'Bank Transfer'
-    },
-    {
-      id: '3',
-      type: 'buy',
-      amount: 500,
-      currency: 'KES',
-      toCurrency: 'ETH',
-      toAmount: 0.0014,
-      status: 'pending',
-      timestamp: new Date(Date.now() - 3600000), // 1 hour ago
-      paymentMethod: 'M-Pesa'
-    }
-  ]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const addTransaction = (transactionData: Omit<Transaction, 'id' | 'timestamp'>) => {
-    const newTransaction: Transaction = {
-      ...transactionData,
-      id: Math.random().toString(36).substr(2, 9),
-      timestamp: new Date()
-    };
-    setTransactions(prev => [newTransaction, ...prev]);
+  useEffect(() => {
+    refreshTransactions();
+  }, []);
+
+  const refreshTransactions = async () => {
+    try {
+      setLoading(true);
+      const response = await apiClient.getTransactions();
+      setTransactions(response.transactions || []);
+    } catch (error) {
+      console.error('Refresh transactions error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createOnRampTransaction = async (data: {
+    fromAmount: number;
+    fromCurrency: string;
+    toCurrency: string;
+    paymentMethod: string;
+    mobileMoneyPhone?: string;
+  }) => {
+    try {
+      const response = await apiClient.createOnRampTransaction(data);
+      await refreshTransactions();
+      return response.transaction;
+    } catch (error) {
+      console.error('Create on-ramp transaction error:', error);
+      throw error;
+    }
+  };
+
+  const createOffRampTransaction = async (data: {
+    fromAmount: number;
+    fromCurrency: string;
+    toCurrency: string;
+    paymentMethod: string;
+    recipientPhone: string;
+  }) => {
+    try {
+      const response = await apiClient.createOffRampTransaction(data);
+      await refreshTransactions();
+      return response.transaction;
+    } catch (error) {
+      console.error('Create off-ramp transaction error:', error);
+      throw error;
+    }
   };
 
   return (
-    <TransactionContext.Provider value={{ transactions, addTransaction }}>
+    <TransactionContext.Provider value={{ 
+      transactions, 
+      loading,
+      refreshTransactions,
+      createOnRampTransaction,
+      createOffRampTransaction
+    }}>
       {children}
     </TransactionContext.Provider>
   );

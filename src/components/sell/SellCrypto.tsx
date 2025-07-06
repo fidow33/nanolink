@@ -8,20 +8,32 @@ interface SellCryptoProps {
 }
 
 export default function SellCrypto({ onBack }: SellCryptoProps) {
-  const { user, updateUser } = useAuth();
-  const { addTransaction } = useTransactions();
+  const { user, wallets, refreshUser } = useAuth();
+  const { createOffRampTransaction } = useTransactions();
   const [step, setStep] = useState<'select' | 'amount' | 'payment' | 'confirm' | 'processing'>('select');
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [loading, setLoading] = useState(false);
+  const [recipientPhone, setRecipientPhone] = useState('');
 
   if (!user) return null;
 
   const cryptos = [
-    { symbol: 'USDT', name: 'Tether USD', rate: 146, icon: '$', balance: user.balances.USDT || 0 },
-    { symbol: 'BTC', name: 'Bitcoin', rate: 6570000, icon: '₿', balance: user.balances.BTC || 0 },
-    { symbol: 'ETH', name: 'Ethereum', rate: 365000, icon: 'Ξ', balance: user.balances.ETH || 0 }
+    { 
+      symbol: 'USDT', 
+      name: 'Tether USD', 
+      rate: 146, 
+      icon: '$', 
+      balance: wallets.find(w => w.currency === 'USDT')?.balance || 0 
+    },
+    { 
+      symbol: 'USDC', 
+      name: 'USD Coin', 
+      rate: 146, 
+      icon: '$', 
+      balance: wallets.find(w => w.currency === 'USDC')?.balance || 0 
+    }
   ];
 
   const paymentMethods = {
@@ -54,34 +66,37 @@ export default function SellCrypto({ onBack }: SellCryptoProps) {
   const fiatAmount = selectedCryptoData ? parseFloat(amount) * selectedCryptoData.rate : 0;
 
   const handleSell = async () => {
-    if (!selectedCryptoData) return;
+    if (!selectedCryptoData || !user || !recipientPhone) return;
     
     setLoading(true);
     setStep('processing');
 
-    // Simulate processing
-    setTimeout(() => {
-      // Add transaction
-      addTransaction({
-        type: 'sell',
-        amount: parseFloat(amount),
-        currency: selectedCrypto,
+    try {
+      const selectedPaymentMethod = paymentMethods[user.country as keyof typeof paymentMethods]
+        .find(p => p.id === paymentMethod);
+      
+      await createOffRampTransaction({
+        fromAmount: parseFloat(amount),
+        fromCurrency: selectedCrypto,
         toCurrency: currencySymbol,
-        toAmount: fiatAmount,
-        status: 'completed',
-        paymentMethod: paymentMethods[user.country as keyof typeof paymentMethods]
-          .find(p => p.id === paymentMethod)?.name || ''
+        paymentMethod: selectedPaymentMethod?.name || paymentMethod,
+        recipientPhone: recipientPhone || user.phone
       });
-
-      // Update user balances
-      const newBalances = { ...user.balances };
-      newBalances[selectedCrypto] = (newBalances[selectedCrypto] || 0) - parseFloat(amount);
-      newBalances[currencySymbol] = (newBalances[currencySymbol] || 0) + fiatAmount;
-      updateUser({ balances: newBalances });
-
+      
+      // Refresh user data to get updated balances
+      await refreshUser();
+      
+      // Show success and go back after delay
+      setTimeout(() => {
+        onBack();
+      }, 3000);
+    } catch (error: any) {
+      console.error('Sell error:', error);
+      setStep('confirm');
+      // You could show an error message here
+    } finally {
       setLoading(false);
-      onBack();
-    }, 3000);
+    }
   };
 
   return (
@@ -231,6 +246,23 @@ export default function SellCrypto({ onBack }: SellCryptoProps) {
         {step === 'payment' && (
           <div className="space-y-6">
             <h2 className="text-xl font-semibold text-slate-900">Select Payment Method</h2>
+            
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Recipient Phone Number
+              </label>
+              <input
+                type="tel"
+                value={recipientPhone}
+                onChange={(e) => setRecipientPhone(e.target.value)}
+                placeholder={user?.phone || "Enter phone number"}
+                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              />
+              <p className="text-sm text-slate-600 mt-1">
+                Leave empty to use your registered phone number
+              </p>
+            </div>
+            
             <div className="space-y-4">
               {paymentMethods[user.country as keyof typeof paymentMethods].map((method) => (
                 <button
@@ -290,6 +322,10 @@ export default function SellCrypto({ onBack }: SellCryptoProps) {
                   {paymentMethods[user.country as keyof typeof paymentMethods]
                     .find(p => p.id === paymentMethod)?.name}
                 </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600">Recipient:</span>
+                <span className="font-semibold">{recipientPhone || user?.phone}</span>
               </div>
             </div>
             <div className="flex items-center space-x-2 text-sm text-slate-600 bg-green-50 p-4 rounded-2xl">

@@ -1,96 +1,127 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { apiClient } from '../lib/api';
+import type { User, Wallet } from '../lib/supabase';
 
-interface User {
-  id: string;
+interface AuthUser extends User {
   firstName?: string;
   lastName?: string;
-  email?: string;
-  phone: string;
-  country: string;
-  kycStatus: 'pending' | 'approved' | 'rejected';
-  role: 'user' | 'admin';
-  balances: {
-    [key: string]: number;
-  };
   registrationType?: 'phone' | 'email';
 }
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
+  wallets: Wallet[];
   loading: boolean;
-  login: (identifier: string, otp: string) => Promise<boolean>;
+  sendOtp: (phone?: string, email?: string) => Promise<void>;
+  verifyOtp: (data: {
+    phone?: string;
+    email?: string;
+    otp: string;
+    firstName?: string;
+    lastName?: string;
+    country?: string;
+  }) => Promise<boolean>;
   logout: () => void;
-  updateUser: (updates: Partial<User>) => void;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [wallets, setWallets] = useState<Wallet[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading user data
-    const savedUser = localStorage.getItem('nanolink_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    const token = localStorage.getItem('nanolink_token');
+    if (token) {
+      refreshUser();
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
-  const login = async (identifier: string, otp: string): Promise<boolean> => {
-    // Simulate OTP verification
-    if (otp === '1234') {
-      // Determine if identifier is email or phone
-      const isEmail = identifier.includes('@');
-      const phone = isEmail ? '+254700000000' : identifier; // Default phone for email users
-      
-      const newUser: User = {
-        id: Math.random().toString(36).substr(2, 9),
-        firstName: 'John',
-        lastName: 'Doe',
-        email: isEmail ? identifier : undefined,
-        phone,
-        country: phone.startsWith('+254') ? 'kenya' : 
-                phone.startsWith('+256') ? 'uganda' :
-                phone.startsWith('+255') ? 'tanzania' :
-                phone.startsWith('+252') ? 'somalia' : 'kenya',
-        kycStatus: phone === '+254700000000' ? 'approved' : 'pending',
-        role: phone === '+254700000000' ? 'admin' : 'user',
-        registrationType: isEmail ? 'email' : 'phone',
-        balances: {
-          USDT: isEmail ? 150.75 : 0, // Give email users some demo balance
-          BTC: isEmail ? 0.0025 : 0,
-          ETH: isEmail ? 0.15 : 0,
-          USD: 0,
-          KES: 0,
-          UGX: 0,
-          TZS: 0,
-          SOS: 0
-        }
-      };
-      setUser(newUser);
-      localStorage.setItem('nanolink_user', JSON.stringify(newUser));
-      return true;
+  const sendOtp = async (phone?: string, email?: string) => {
+    try {
+      await apiClient.sendOtp(phone, email);
+    } catch (error) {
+      console.error('Send OTP error:', error);
+      throw error;
     }
-    return false;
+  };
+
+  const verifyOtp = async (data: {
+    phone?: string;
+    email?: string;
+    otp: string;
+    firstName?: string;
+    lastName?: string;
+    country?: string;
+  }): Promise<boolean> => {
+    try {
+      const response = await apiClient.verifyOtp(data);
+      
+      if (response.success && response.user) {
+        const authUser: AuthUser = {
+          ...response.user,
+          firstName: response.user.first_name,
+          lastName: response.user.last_name,
+          kycStatus: response.user.kyc_status,
+          registrationType: data.email ? 'email' : 'phone'
+        };
+        
+        setUser(authUser);
+        setWallets(response.wallets || []);
+        return true;
+      }
+      
+      return false;
+    } catch (error) {
+      console.error('Verify OTP error:', error);
+      return false;
+    }
+  };
+
+  const refreshUser = async () => {
+    try {
+      const response = await apiClient.getCurrentUser();
+      
+      if (response.user) {
+        const authUser: AuthUser = {
+          ...response.user,
+          firstName: response.user.first_name,
+          lastName: response.user.last_name,
+          kycStatus: response.user.kyc_status,
+          registrationType: response.user.email ? 'email' : 'phone'
+        };
+        
+        setUser(authUser);
+        setWallets(response.wallets || []);
+      }
+    } catch (error) {
+      console.error('Refresh user error:', error);
+      logout();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('nanolink_user');
-  };
-
-  const updateUser = (updates: Partial<User>) => {
-    if (user) {
-      const updatedUser = { ...user, ...updates };
-      setUser(updatedUser);
-      localStorage.setItem('nanolink_user', JSON.stringify(updatedUser));
-    }
+    setWallets([]);
+    apiClient.clearToken();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      wallets, 
+      loading, 
+      sendOtp, 
+      verifyOtp, 
+      logout, 
+      refreshUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );

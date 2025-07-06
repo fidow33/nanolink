@@ -18,7 +18,7 @@ export default function LoginScreen() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const { sendOtp, verifyOtp } = useAuth();
 
   const countries = [
     { code: 'kenya', name: 'Kenya', flag: '🇰🇪', prefix: '+254' },
@@ -29,30 +29,56 @@ export default function LoginScreen() {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    if (registrationType === 'phone' && formData.phone.length < 10) {
-      setError('Please enter a valid phone number');
-      return;
-    }
-    if (registrationType === 'email' && !formData.email.includes('@')) {
-      setError('Please enter a valid email address');
-      return;
-    }
-    if (!formData.firstName || !formData.lastName || !formData.country) {
-      setError('Please fill in all required fields');
-      return;
-    }
-    setError('');
-    setStep('otp');
+    handleSendOtp();
   };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!loginData.identifier) {
-      setError('Please enter your email or phone number');
-      return;
+    handleSendOtp();
+  };
+
+  const handleSendOtp = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      
+      if (step === 'register') {
+        if (registrationType === 'phone' && formData.phone.length < 10) {
+          setError('Please enter a valid phone number');
+          return;
+        }
+        if (registrationType === 'email' && !formData.email.includes('@')) {
+          setError('Please enter a valid email address');
+          return;
+        }
+        if (!formData.firstName || !formData.lastName || !formData.country) {
+          setError('Please fill in all required fields');
+          return;
+        }
+        
+        await sendOtp(
+          registrationType === 'phone' ? formData.phone : undefined,
+          registrationType === 'email' ? formData.email : undefined
+        );
+      } else {
+        if (!loginData.identifier) {
+          setError('Please enter your email or phone number');
+          return;
+        }
+        
+        const isEmail = loginData.identifier.includes('@');
+        await sendOtp(
+          isEmail ? undefined : loginData.identifier,
+          isEmail ? loginData.identifier : undefined
+        );
+      }
+      
+      setStep('otp');
+    } catch (error: any) {
+      setError(error.message || 'Failed to send OTP');
+    } finally {
+      setLoading(false);
     }
-    setError('');
-    setStep('otp');
   };
 
   const handleOtpSubmit = async (e: React.FormEvent) => {
@@ -61,9 +87,24 @@ export default function LoginScreen() {
     setError('');
 
     try {
-      // Use phone for login (fallback for demo)
-      const phoneToUse = step === 'otp' && formData.phone ? formData.phone : loginData.identifier;
-      const success = await login(phoneToUse, loginData.otp);
+      const isRegister = formData.firstName && formData.lastName && formData.country;
+      const identifier = isRegister ? 
+        (registrationType === 'phone' ? formData.phone : formData.email) :
+        loginData.identifier;
+      
+      const isEmail = identifier?.includes('@');
+      
+      const success = await verifyOtp({
+        phone: isEmail ? undefined : identifier,
+        email: isEmail ? identifier : undefined,
+        otp: loginData.otp,
+        ...(isRegister && {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          country: formData.country
+        })
+      });
+      
       if (!success) {
         setError('Invalid OTP. Please try again.');
       }

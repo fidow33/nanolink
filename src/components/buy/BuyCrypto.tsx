@@ -8,12 +8,13 @@ interface BuyCryptoProps {
 }
 
 export default function BuyCrypto({ onBack }: BuyCryptoProps) {
-  const { user, updateUser } = useAuth();
-  const { addTransaction } = useTransactions();
+  const { user, wallets, refreshUser } = useAuth();
+  const { createOnRampTransaction } = useTransactions();
   const [step, setStep] = useState<'select' | 'amount' | 'payment' | 'confirm' | 'processing'>('select');
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [loading, setLoading] = useState(false);
 
   if (!user) return null;
 
@@ -53,31 +54,37 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
   const cryptoAmount = selectedCryptoData ? parseFloat(amount) / selectedCryptoData.rate : 0;
 
   const handlePurchase = async () => {
-    if (!selectedCryptoData) return;
+    if (!selectedCryptoData || !user) return;
     
+    setLoading(true);
     setStep('processing');
 
-    // Simulate processing
-    setTimeout(() => {
-      // Add transaction
-      addTransaction({
-        type: 'buy',
-        amount: parseFloat(amount),
-        currency: currencySymbol,
+    try {
+      const selectedPaymentMethod = paymentMethods[user.country as keyof typeof paymentMethods]
+        .find(p => p.id === paymentMethod);
+      
+      await createOnRampTransaction({
+        fromAmount: parseFloat(amount),
+        fromCurrency: currencySymbol,
         toCurrency: selectedCrypto,
-        toAmount: cryptoAmount,
-        status: 'completed',
-        paymentMethod: paymentMethods[user.country as keyof typeof paymentMethods]
-          .find(p => p.id === paymentMethod)?.name || ''
+        paymentMethod: selectedPaymentMethod?.name || paymentMethod,
+        mobileMoneyPhone: user.phone
       });
-
-      // Update user balance
-      const newBalances = { ...user.balances };
-      newBalances[selectedCrypto] = (newBalances[selectedCrypto] || 0) + cryptoAmount;
-      updateUser({ balances: newBalances });
-
-      onBack();
-    }, 3000);
+      
+      // Refresh user data to get updated balances
+      await refreshUser();
+      
+      // Show success and go back after delay
+      setTimeout(() => {
+        onBack();
+      }, 3000);
+    } catch (error: any) {
+      console.error('Purchase error:', error);
+      setStep('confirm');
+      // You could show an error message here
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -300,10 +307,17 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
               </button>
               <button
                 onClick={handlePurchase}
+                disabled={loading}
                 className="flex-1 bg-green-600 text-white py-4 rounded-2xl font-semibold hover:bg-green-700 transition-colors flex items-center justify-center space-x-2 active:scale-95"
               >
-                <ArrowUpRight className="w-5 h-5" />
-                <span>Confirm Purchase</span>
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <ArrowUpRight className="w-5 h-5" />
+                    <span>Confirm Purchase</span>
+                  </>
+                )}
               </button>
             </div>
           </div>

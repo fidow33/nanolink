@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTransactions } from '../../contexts/TransactionContext';
-import QuickActions from './QuickActions';
 import RecentTransactions from './RecentTransactions';
 
 interface DashboardProps {
@@ -24,24 +23,23 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ onNavigate }: DashboardProps) {
-  const { user } = useAuth();
+  const { user, wallets } = useAuth();
   const { transactions } = useTransactions();
   const [showBalances, setShowBalances] = React.useState(true);
 
   if (!user) return null;
 
   const cryptoBalances = {
-    USDT: user.balances.USDT || 0,
-    BTC: user.balances.BTC || 0,
-    ETH: user.balances.ETH || 0
+    USDT: wallets.find(w => w.currency === 'USDT')?.balance || 0,
+    USDC: wallets.find(w => w.currency === 'USDC')?.balance || 0
   };
 
-  const fiatBalance = user.balances[
+  const fiatBalance = wallets.find(w => w.currency === 
     user.country === 'kenya' ? 'KES' :
     user.country === 'uganda' ? 'UGX' :
     user.country === 'tanzania' ? 'TZS' :
     user.country === 'somalia' ? 'SOS' : 'USD'
-  ] || 0;
+  )?.balance || 0;
 
   const currencySymbol = 
     user.country === 'kenya' ? 'KES' :
@@ -49,7 +47,7 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
     user.country === 'tanzania' ? 'TZS' :
     user.country === 'somalia' ? 'SOS' : 'USD';
 
-  const totalUsdValue = cryptoBalances.USDT + (cryptoBalances.BTC * 45000) + (cryptoBalances.ETH * 2500);
+  const totalUsdValue = cryptoBalances.USDT + cryptoBalances.USDC;
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -225,18 +223,18 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               <div key={crypto} className="flex items-center justify-between p-4 rounded-xl bg-gray-800/50 hover:bg-gray-800 transition-all duration-300 border border-gray-700/50">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold">
-                    {crypto === 'USDT' ? '$' : crypto === 'BTC' ? '₿' : 'Ξ'}
+                    $
                   </div>
                   <div>
                     <p className="font-bold text-white text-lg">{crypto}</p>
                     <p className="text-sm text-gray-400 font-medium">
-                      {crypto === 'USDT' ? 'US Dollar Tether' : crypto === 'BTC' ? 'Bitcoin' : 'Ethereum'}
+                      {crypto === 'USDT' ? 'US Dollar Tether' : 'USD Coin'}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-white text-xl">
-                    {showBalances ? balance.toFixed(4) : '••••••'}
+                    {showBalances ? balance.toFixed(2) : '••••••'}
                   </p>
                   <p className="text-sm text-gray-400 font-medium">{crypto}</p>
                 </div>
