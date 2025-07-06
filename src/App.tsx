@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { TransactionProvider } from './contexts/TransactionContext';
 import LandingPage from './components/landing/LandingPage';

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Smartphone, Shield, ArrowRight, Globe, Mail, User, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { Smartphone, Shield, ArrowRight, Globe, Mail, User } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginScreen() {
