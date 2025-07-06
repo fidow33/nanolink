@@ -21,7 +21,7 @@ export default function BalanceCard({
   gradient 
 }: BalanceCardProps) {
   const formatAmount = (amount: number, currency: string) => {
-    if (currency === 'USD' || currency === 'USDT') {
+    if (currency === 'USD' || currency === 'USDT' || currency.startsWith('$')) {
       return `$${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
     return `${amount.toLocaleString()} ${currency}`;

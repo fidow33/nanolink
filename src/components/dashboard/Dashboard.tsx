@@ -37,13 +37,13 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const fiatBalance = user.balances[
     user.country === 'kenya' ? 'KES' :
     user.country === 'uganda' ? 'UGX' :
-    user.country === 'tanzania' ? 'TZS' : 'SOS'
+    user.country === 'tanzania' ? 'TZS' : 'USD'
   ] || 0;
 
   const currencySymbol = 
     user.country === 'kenya' ? 'KES' :
     user.country === 'uganda' ? 'UGX' :
-    user.country === 'tanzania' ? 'TZS' : 'SOS';
+    user.country === 'tanzania' ? 'TZS' : 'USD';
 
   const totalUsdValue = cryptoBalances.USDT + (cryptoBalances.BTC * 45000) + (cryptoBalances.ETH * 2500);
 

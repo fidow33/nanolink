@@ -19,7 +19,7 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
   if (!user) return null;
 
   const cryptos = [
-    { symbol: 'USDT', name: 'Tether', rate: 146, icon: '₮' },
+    { symbol: 'USDT', name: 'Tether USD', rate: 146, icon: '$' },
     { symbol: 'BTC', name: 'Bitcoin', rate: 6570000, icon: '₿' },
     { symbol: 'ETH', name: 'Ethereum', rate: 365000, icon: 'Ξ' }
   ];
@@ -36,17 +36,13 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
     tanzania: [
       { id: 'vodacom', name: 'Vodacom M-Pesa', icon: '📱', fee: '1.1%' },
       { id: 'airtel', name: 'Airtel Money', icon: '📱', fee: '1.1%' }
-    ],
-    somalia: [
-      { id: 'evc', name: 'EVC Plus', icon: '📱', fee: '1.5%' },
-      { id: 'sahal', name: 'Sahal', icon: '📱', fee: '1.5%' }
     ]
   };
 
   const currencySymbol = 
     user.country === 'kenya' ? 'KES' :
     user.country === 'uganda' ? 'UGX' :
-    user.country === 'tanzania' ? 'TZS' : 'SOS';
+    user.country === 'tanzania' ? 'TZS' : 'USD';
 
   const selectedCryptoData = cryptos.find(c => c.symbol === selectedCrypto);
   const cryptoAmount = selectedCryptoData ? parseFloat(amount) / selectedCryptoData.rate : 0;

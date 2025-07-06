@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         phone,
         country: phone.startsWith('+254') ? 'kenya' : 
                 phone.startsWith('+256') ? 'uganda' :
-                phone.startsWith('+255') ? 'tanzania' : 'somalia',
+                phone.startsWith('+255') ? 'tanzania' : 'kenya',
         kycStatus: phone === '+254700000000' ? 'approved' : 'pending',
         role: phone === '+254700000000' ? 'admin' : 'user',
         registrationType: isEmail ? 'email' : 'phone',
@@ -61,10 +61,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           USDT: isEmail ? 150.75 : 0, // Give email users some demo balance
           BTC: isEmail ? 0.0025 : 0,
           ETH: isEmail ? 0.15 : 0,
+          USD: 0,
           KES: 0,
           UGX: 0,
-          TZS: 0,
-          SOS: 0
+          TZS: 0
         }
       };
       setUser(newUser);
