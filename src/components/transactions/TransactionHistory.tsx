@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Send, Filter, Search } from 'lucide-react';
-import { useTransactions, Transaction } from '../../contexts/TransactionContext';
+import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Send, Search } from 'lucide-react';
+import { useTransactions } from '../../contexts/TransactionContext';
 
 interface TransactionHistoryProps {
   onBack: () => void;

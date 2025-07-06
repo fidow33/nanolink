@@ -299,6 +299,7 @@ export default function SellCrypto({ onBack }: SellCryptoProps) {
               </button>
               <button
                 onClick={handleSell}
+               disabled={loading}
                 className="flex-1 bg-red-600 text-white py-4 rounded-2xl font-semibold hover:bg-red-700 transition-colors flex items-center justify-center space-x-2 active:scale-95"
               >
                 <ArrowDownLeft className="w-5 h-5" />
