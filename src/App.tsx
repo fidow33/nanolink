@@ -9,6 +9,8 @@ import SellCrypto from './components/sell/SellCrypto';
 import Wallet from './components/wallet/Wallet';
 import TransactionHistory from './components/transactions/TransactionHistory';
 import AdminDashboard from './components/admin/AdminDashboard';
+import InstantExchange from './components/exchange/InstantExchange';
+import BlockchainSend from './components/blockchain/BlockchainSend';
 import Navigation from './components/layout/Navigation';
 import LoadingScreen from './components/common/LoadingScreen';
 
@@ -42,6 +44,10 @@ function AppContent() {
         return <TransactionHistory onBack={() => setCurrentView('dashboard')} />;
       case 'admin':
         return <AdminDashboard onBack={() => setCurrentView('dashboard')} />;
+      case 'exchange':
+        return <InstantExchange onBack={() => setCurrentView('dashboard')} />;
+      case 'send':
+        return <BlockchainSend onBack={() => setCurrentView('dashboard')} />;
       default:
         return <Dashboard onNavigate={setCurrentView} />;
     }

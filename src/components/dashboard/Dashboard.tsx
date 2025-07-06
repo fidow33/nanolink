@@ -10,7 +10,9 @@ import {
   BarChart3,
   Activity,
   ArrowUpRight,
-  ArrowDownLeft
+  ArrowDownLeft,
+  ArrowLeftRight,
+  Send
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTransactions } from '../../contexts/TransactionContext';
@@ -282,14 +284,36 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
             </button>
             
             <button
-              onClick={() => onNavigate('transactions')}
-              className="bg-gradient-to-r from-purple-600 to-violet-600 p-6 rounded-2xl text-white hover:from-purple-700 hover:to-violet-700 transition-all duration-200 active:scale-95"
+              onClick={() => onNavigate('exchange')}
+              className="bg-gradient-to-r from-orange-600 to-red-600 p-6 rounded-2xl text-white hover:from-orange-700 hover:to-red-700 transition-all duration-200 active:scale-95"
             >
               <div className="flex items-center space-x-3 mb-3">
-                <Activity className="w-6 h-6" />
-                <span className="font-bold text-lg">History</span>
+                <ArrowLeftRight className="w-6 h-6" />
+                <span className="font-bold text-lg">Exchange</span>
               </div>
-              <p className="text-purple-100 text-sm">View transactions</p>
+              <p className="text-orange-100 text-sm">Instant crypto to fiat</p>
+            </button>
+            
+            <button
+              onClick={() => onNavigate('send')}
+              className="bg-gradient-to-r from-teal-600 to-cyan-600 p-6 rounded-2xl text-white hover:from-teal-700 hover:to-cyan-700 transition-all duration-200 active:scale-95"
+            >
+              <div className="flex items-center space-x-3 mb-3">
+                <Send className="w-6 h-6" />
+                <span className="font-bold text-lg">Send</span>
+              </div>
+              <p className="text-teal-100 text-sm">Blockchain transfers</p>
+            </button>
+            
+            <button
+              onClick={() => onNavigate('transactions')}
+              className="bg-gradient-to-r from-purple-600 to-violet-600 p-4 rounded-2xl text-white hover:from-purple-700 hover:to-violet-700 transition-all duration-200 active:scale-95"
+            >
+              <div className="flex items-center space-x-2 mb-2">
+                <Activity className="w-6 h-6" />
+                <span className="font-bold text-base">History</span>
+              </div>
+              <p className="text-purple-100 text-xs">View transactions</p>
             </button>
           </div>
         </div>

@@ -6,7 +6,9 @@ import {
   Clock, 
   Settings,
   LogOut,
-  Bell
+  Bell,
+  ArrowLeftRight,
+  Send
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -23,8 +25,9 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
     { id: 'dashboard', label: 'Home', icon: Home },
     { id: 'buy', label: 'Buy', icon: ArrowUpRight },
     { id: 'sell', label: 'Sell', icon: ArrowDownLeft },
+    { id: 'exchange', label: 'Exchange', icon: ArrowLeftRight },
+    { id: 'send', label: 'Send', icon: Send },
     { id: 'wallet', label: 'Wallet', icon: Wallet },
-    { id: 'transactions', label: 'History', icon: Clock }
   ];
 
   if (isAdmin) {

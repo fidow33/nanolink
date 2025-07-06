@@ -2,7 +2,7 @@ import { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface Transaction {
   id: string;
-  type: 'buy' | 'sell' | 'send';
+  type: 'buy' | 'sell' | 'send' | 'exchange';
   amount: number;
   currency: string;
   toCurrency?: string;
