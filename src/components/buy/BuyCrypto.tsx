@@ -14,7 +14,6 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
   const [selectedCrypto, setSelectedCrypto] = useState('');
   const [amount, setAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [loading, setLoading] = useState(false);
 
   if (!user) return null;
 
@@ -50,7 +49,6 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
   const handlePurchase = async () => {
     if (!selectedCryptoData) return;
     
-    setLoading(true);
     setStep('processing');
 
     // Simulate processing
@@ -72,7 +70,6 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
       newBalances[selectedCrypto] = (newBalances[selectedCrypto] || 0) + cryptoAmount;
       updateUser({ balances: newBalances });
 
-      setLoading(false);
       onBack();
     }, 3000);
   };

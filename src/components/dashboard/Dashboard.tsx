@@ -1,9 +1,6 @@
 import React from 'react';
 import { 
   TrendingUp, 
-  ArrowUpRight, 
-  ArrowDownLeft, 
-  Send, 
   Wallet,
   Eye,
   EyeOff,
