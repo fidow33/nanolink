@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Smartphone, Shield, Zap, ArrowRight, Globe, Mail, User, MapPin } from 'lucide-react';
+import { Smartphone, Shield, ArrowRight, Globe, Mail, User, MapPin } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function LoginScreen() {
@@ -79,12 +79,16 @@ export default function LoginScreen() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
-        {/* Header */}
+        {/* Header with Custom Logo */}
         <div className="text-center mb-8">
           <div className="bg-white p-6 rounded-3xl inline-block mb-6 shadow-2xl">
-            <Zap className="w-16 h-16 text-blue-600" />
+            <img 
+              src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+              alt="NanoLink Logo" 
+              className="w-16 h-16 mx-auto"
+            />
           </div>
-          <h1 className="text-4xl font-bold text-white mb-3">NanoPay</h1>
+          <h1 className="text-4xl font-bold text-white mb-3">NanoLink</h1>
           <p className="text-blue-100 text-lg">Seamless Crypto. Instant Local Money.</p>
         </div>
 
@@ -92,7 +96,7 @@ export default function LoginScreen() {
         {step === 'welcome' && (
           <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
             <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold text-slate-900 mb-3">Welcome to NanoPay</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-3">Welcome to NanoLink</h2>
               <p className="text-slate-600">Your gateway to cryptocurrency in East Africa</p>
             </div>
 
@@ -273,7 +277,7 @@ export default function LoginScreen() {
           <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl">
             <div className="text-center mb-6">
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Welcome Back</h2>
-              <p className="text-slate-600">Sign in to your NanoPay account</p>
+              <p className="text-slate-600">Sign in to your NanoLink account</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-5">
@@ -415,7 +419,11 @@ export default function LoginScreen() {
           </div>
           <div className="text-white">
             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
-              <Zap className="w-6 h-6 opacity-90" />
+              <img 
+                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                alt="NanoLink" 
+                className="w-6 h-6 opacity-90"
+              />
             </div>
             <p className="text-sm font-medium opacity-90">Instant Transfers</p>
           </div>

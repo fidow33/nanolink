@@ -7,7 +7,6 @@ import {
   Clock, 
   Settings,
   LogOut,
-  Zap,
   Bell
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -35,15 +34,19 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
 
   return (
     <>
-      {/* Enhanced Top Bar */}
+      {/* Enhanced Top Bar with Custom Logo */}
       <div className="bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-4 sticky top-0 z-40 shadow-sm">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-3 rounded-2xl shadow-lg">
-              <Zap className="w-6 h-6 text-white" />
+              <img 
+                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                alt="NanoLink Logo" 
+                className="w-6 h-6 brightness-0 invert"
+              />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900">NanoPay</h1>
+              <h1 className="text-xl font-bold text-slate-900">NanoLink</h1>
               <p className="text-xs text-slate-600">East African Crypto Platform</p>
             </div>
           </div>

@@ -31,7 +31,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Simulate loading user data
-    const savedUser = localStorage.getItem('nanopay_user');
+    const savedUser = localStorage.getItem('nanolink_user');
     if (savedUser) {
       setUser(JSON.parse(savedUser));
     }
@@ -68,7 +68,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       };
       setUser(newUser);
-      localStorage.setItem('nanopay_user', JSON.stringify(newUser));
+      localStorage.setItem('nanolink_user', JSON.stringify(newUser));
       return true;
     }
     return false;
@@ -76,14 +76,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('nanopay_user');
+    localStorage.removeItem('nanolink_user');
   };
 
   const updateUser = (updates: Partial<User>) => {
     if (user) {
       const updatedUser = { ...user, ...updates };
       setUser(updatedUser);
-      localStorage.setItem('nanopay_user', JSON.stringify(updatedUser));
+      localStorage.setItem('nanolink_user', JSON.stringify(updatedUser));
     }
   };
 

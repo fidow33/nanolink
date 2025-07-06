@@ -313,7 +313,11 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
         {step === 'processing' && (
           <div className="text-center py-12 space-y-6">
             <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-              <Clock className="w-10 h-10 text-blue-600 animate-spin" />
+              <img 
+                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                alt="NanoLink" 
+                className="w-10 h-10 animate-pulse"
+              />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-slate-900 mb-2">Processing Payment</h2>
