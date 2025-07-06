@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowUpRight, ArrowDownLeft, Send, ArrowRight } from 'lucide-react';
 import { Transaction } from '../../contexts/TransactionContext';
 

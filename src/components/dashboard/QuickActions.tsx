@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowUpRight, ArrowDownLeft, Send, Clock, Sparkles } from 'lucide-react';
 
 interface QuickActionsProps {

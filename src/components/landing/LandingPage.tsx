@@ -1,17 +1,14 @@
-import React from 'react';
 import { 
   ArrowRight, 
   Shield, 
   Zap, 
   Globe, 
   TrendingUp, 
-  Users, 
   CheckCircle,
   Star,
   Smartphone,
   DollarSign,
-  Award,
-  Clock
+  Award
 } from 'lucide-react';
 
 interface LandingPageProps {
