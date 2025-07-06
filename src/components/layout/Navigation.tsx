@@ -33,11 +33,11 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
 
   return (
     <>
-      {/* Enhanced Top Bar with Custom Logo */}
-      <div className="bg-white/95 backdrop-blur-xl border-b border-slate-200/60 px-6 py-5 sticky top-0 z-40 shadow-lg">
+      {/* Top Bar */}
+      <div className="bg-black/95 backdrop-blur-xl border-b border-gray-800 px-6 py-4 sticky top-0 z-40">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-4 rounded-2xl shadow-xl">
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-xl">
               <img 
                 src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
                 alt="NanoLink Logo" 
@@ -45,22 +45,22 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
               />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">NanoLink</h1>
-              <p className="text-xs text-slate-600 font-medium">East African Crypto Platform</p>
+              <h1 className="text-xl font-bold text-white tracking-tight">NanoLink</h1>
+              <p className="text-xs text-gray-400 font-medium">East African Crypto Platform</p>
             </div>
           </div>
           
           <div className="flex items-center space-x-2">
-            <button className="p-3 rounded-2xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all duration-200 active:scale-95 relative group">
+            <button className="p-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition-all duration-200 active:scale-95 relative group">
               <Bell className="w-5 h-5" />
               {user?.kycStatus === 'pending' && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-lg" />
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
               )}
             </button>
             
             <button
               onClick={logout}
-              className="p-3 rounded-2xl text-slate-600 hover:text-red-600 hover:bg-red-50 transition-all duration-200 active:scale-95 group"
+              className="p-3 rounded-xl text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 active:scale-95 group"
             >
               <LogOut className="w-5 h-5" />
             </button>
@@ -68,29 +68,29 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
         </div>
       </div>
 
-      {/* Enhanced Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-slate-200/60 px-4 py-4 z-50 shadow-2xl">
+      {/* Bottom Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-gray-800 px-4 py-3 z-50">
         <div className="flex items-center justify-around max-w-lg mx-auto">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`flex flex-col items-center space-y-2 p-4 rounded-2xl transition-all duration-300 min-w-[70px] active:scale-95 ${
+              className={`flex flex-col items-center space-y-1 p-3 rounded-xl transition-all duration-300 min-w-[60px] active:scale-95 ${
                 currentView === item.id
-                  ? 'text-blue-600 bg-gradient-to-t from-blue-50 to-indigo-50 shadow-xl border border-blue-200/60'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'text-blue-400 bg-blue-500/10 border border-blue-500/20'
+                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
               }`}
             >
               <item.icon className={`w-5 h-5 ${
                 currentView === item.id ? 'scale-110' : ''
               } transition-transform duration-300`} />
-              <span className={`text-xs font-semibold ${
-                currentView === item.id ? 'font-bold' : ''
+              <span className={`text-xs font-medium ${
+                currentView === item.id ? 'font-semibold' : ''
               }`}>
                 {item.label}
               </span>
               {currentView === item.id && (
-                <div className="w-1.5 h-1.5 bg-blue-600 rounded-full shadow-sm" />
+                <div className="w-1 h-1 bg-blue-400 rounded-full" />
               )}
             </button>
           ))}
