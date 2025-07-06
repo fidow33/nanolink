@@ -47,7 +47,8 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
   const mockUsers = [
     { id: '1', phone: '+254700000001', country: 'kenya', kycStatus: 'pending', balance: 1250 },
     { id: '2', phone: '+256700000002', country: 'uganda', kycStatus: 'approved', balance: 890 },
-    { id: '3', phone: '+255700000003', country: 'tanzania', kycStatus: 'pending', balance: 2100 }
+    { id: '3', phone: '+255700000003', country: 'tanzania', kycStatus: 'pending', balance: 2100 },
+    { id: '4', phone: '+252700000004', country: 'somalia', kycStatus: 'approved', balance: 1650 }
   ];
 
   return (

@@ -42,7 +42,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
   const stats = [
     { number: "50K+", label: "Active Users" },
     { number: "$2M+", label: "Volume Traded" },
-    { number: "3", label: "Countries" },
+    { number: "4", label: "Countries" },
     { number: "99.9%", label: "Uptime" }
   ];
 
@@ -155,6 +155,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="flex items-center space-x-2">
                 <span className="text-2xl">🇹🇿</span>
                 <span className="font-semibold">Tanzania</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-2xl">🇸🇴</span>
+                <span className="font-semibold">Somalia</span>
               </div>
             </div>
           </div>
@@ -345,7 +349,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             Ready to Start Your Crypto Journey?
           </h2>
           <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-            Join thousands of users who trust NanoLink for their cryptocurrency needs. 
+            Join thousands of users across East Africa who trust NanoLink for their cryptocurrency needs. 
             Start trading today with just a few clicks.
           </p>
           
@@ -385,7 +389,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                 </div>
               </div>
               <p className="text-slate-400 leading-relaxed max-w-md">
-                Making cryptocurrency accessible to everyone in East Africa through 
+                Making cryptocurrency accessible to everyone across East Africa through 
                 secure, fast, and user-friendly trading solutions.
               </p>
             </div>
@@ -412,7 +416,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
           
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-            <p>&copy; 2024 NanoLink. All rights reserved. Licensed and regulated in Kenya, Uganda, and Tanzania.</p>
+            <p>&copy; 2024 NanoLink. All rights reserved. Licensed and regulated in Kenya, Uganda, Tanzania, and Somalia.</p>
           </div>
         </div>
       </footer>

@@ -23,7 +23,8 @@ export default function LoginScreen() {
   const countries = [
     { code: 'kenya', name: 'Kenya', flag: '🇰🇪', prefix: '+254' },
     { code: 'uganda', name: 'Uganda', flag: '🇺🇬', prefix: '+256' },
-    { code: 'tanzania', name: 'Tanzania', flag: '🇹🇿', prefix: '+255' }
+    { code: 'tanzania', name: 'Tanzania', flag: '🇹🇿', prefix: '+255' },
+    { code: 'somalia', name: 'Somalia', flag: '🇸🇴', prefix: '+252' }
   ];
 
   const handleRegister = (e: React.FormEvent) => {

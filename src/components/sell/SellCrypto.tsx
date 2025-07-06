@@ -36,13 +36,19 @@ export default function SellCrypto({ onBack }: SellCryptoProps) {
     tanzania: [
       { id: 'vodacom', name: 'Vodacom M-Pesa', icon: '📱', fee: '1.1%' },
       { id: 'airtel', name: 'Airtel Money', icon: '📱', fee: '1.1%' }
+    ],
+    somalia: [
+      { id: 'evc', name: 'EVC Plus', icon: '📱', fee: '1.3%' },
+      { id: 'zaad', name: 'Zaad Service', icon: '📱', fee: '1.3%' },
+      { id: 'sahal', name: 'Sahal Service', icon: '📱', fee: '1.4%' }
     ]
   };
 
   const currencySymbol = 
     user.country === 'kenya' ? 'KES' :
     user.country === 'uganda' ? 'UGX' :
-    user.country === 'tanzania' ? 'TZS' : 'USD';
+    user.country === 'tanzania' ? 'TZS' :
+    user.country === 'somalia' ? 'SOS' : 'USD';
 
   const selectedCryptoData = cryptos.find(c => c.symbol === selectedCrypto);
   const fiatAmount = selectedCryptoData ? parseFloat(amount) * selectedCryptoData.rate : 0;
