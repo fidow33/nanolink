@@ -117,7 +117,7 @@ export default function LoginScreen() {
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-xs text-slate-500 mb-4">Available in 4 countries</p>
+              <p className="text-xs text-slate-500 mb-4">Available in 3 countries</p>
               <div className="flex justify-center space-x-2">
                 {countries.map((country) => (
                   <span key={country.code} className="text-2xl">{country.flag}</span>

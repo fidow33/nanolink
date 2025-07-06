@@ -163,13 +163,13 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
               <div className="flex items-center space-x-4">
                 <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                   <span className="text-xl font-bold text-slate-700">
-                    {crypto === 'USDT' ? '₮' : crypto === 'BTC' ? '₿' : 'Ξ'}
+                    {crypto === 'USDT' ? '$' : crypto === 'BTC' ? '₿' : 'Ξ'}
                   </span>
                 </div>
                 <div>
                   <p className="font-bold text-slate-900 text-lg">{crypto}</p>
                   <p className="text-sm text-slate-600 font-medium">
-                    {crypto === 'USDT' ? 'Tether USD' : crypto === 'BTC' ? 'Bitcoin' : 'Ethereum'}
+                    {crypto === 'USDT' ? 'US Dollar Tether' : crypto === 'BTC' ? 'Bitcoin' : 'Ethereum'}
                   </p>
                 </div>
               </div>

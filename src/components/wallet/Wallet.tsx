@@ -97,13 +97,13 @@ export default function Wallet({ onBack }: WalletProps) {
                   <div className="flex items-center space-x-4">
                     <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm">
                       <span className="text-lg font-bold text-slate-700">
-                        {crypto === 'USDT' ? '₮' : crypto === 'BTC' ? '₿' : 'Ξ'}
+                        {crypto === 'USDT' ? '$' : crypto === 'BTC' ? '₿' : 'Ξ'}
                       </span>
                     </div>
                     <div>
                       <p className="font-semibold text-slate-900">{crypto}</p>
                       <p className="text-sm text-slate-600">
-                        {crypto === 'USDT' ? 'Tether USD' : crypto === 'BTC' ? 'Bitcoin' : 'Ethereum'}
+                        {crypto === 'USDT' ? 'US Dollar Tether' : crypto === 'BTC' ? 'Bitcoin' : 'Ethereum'}
                       </p>
                     </div>
                   </div>
