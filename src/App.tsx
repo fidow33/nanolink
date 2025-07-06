@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { TransactionProvider } from './contexts/TransactionContext';
+import LandingPage from './components/landing/LandingPage';
 import LoginScreen from './components/auth/LoginScreen';
 import Dashboard from './components/dashboard/Dashboard';
 import BuyCrypto from './components/buy/BuyCrypto';
@@ -14,12 +15,16 @@ import LoadingScreen from './components/common/LoadingScreen';
 function AppContent() {
   const { user, loading } = useAuth();
   const [currentView, setCurrentView] = useState('dashboard');
+  const [showLanding, setShowLanding] = useState(true);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
   if (!user) {
+    if (showLanding) {
+      return <LandingPage onGetStarted={() => setShowLanding(false)} />;
+    }
     return <LoginScreen />;
   }
 
