@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowUpRight, ArrowDownLeft, Send, Search } from 'lucide-react';
 import { useTransactions } from '../../contexts/TransactionContext';
+import type { Transaction } from '../../lib/supabase';
 
 interface TransactionHistoryProps {
   onBack: () => void;
@@ -13,11 +14,11 @@ export default function TransactionHistory({ onBack }: TransactionHistoryProps) 
 
   const getTransactionIcon = (type: string) => {
     switch (type) {
-      case 'buy':
+      case 'on_ramp':
         return <ArrowUpRight className="w-5 h-5 text-green-600" />;
-      case 'sell':
+      case 'off_ramp':
         return <ArrowDownLeft className="w-5 h-5 text-red-600" />;
-      case 'send':
+      case 'transfer':
         return <Send className="w-5 h-5 text-blue-600" />;
       default:
         return <ArrowUpRight className="w-5 h-5 text-slate-600" />;
@@ -38,8 +39,15 @@ export default function TransactionHistory({ onBack }: TransactionHistoryProps) 
   };
 
   const filteredTransactions = transactions.filter(transaction => {
-    const matchesFilter = filter === 'all' || transaction.type === filter;
-    const matchesSearch = transaction.currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const typeMap: { [key: string]: string } = {
+      'buy': 'on_ramp',
+      'sell': 'off_ramp',
+      'send': 'transfer'
+    };
+    
+    const matchesFilter = filter === 'all' || transaction.type === typeMap[filter] || transaction.type === filter;
+    const matchesSearch = transaction.from_currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         transaction.to_currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          transaction.type.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
@@ -125,20 +133,22 @@ export default function TransactionHistory({ onBack }: TransactionHistoryProps) 
                     <div>
                       <div className="flex items-center space-x-2">
                         <p className="font-semibold text-slate-900 capitalize">
-                          {transaction.type} {transaction.currency}
+                          {transaction.type === 'on_ramp' ? 'Buy' : 
+                           transaction.type === 'off_ramp' ? 'Sell' : 
+                           'Transfer'} {transaction.from_currency}
                         </p>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(transaction.status)}`}>
                           {transaction.status}
                         </span>
                       </div>
                       <div className="flex items-center space-x-2 text-sm text-slate-600 mt-1">
-                        <span>{transaction.timestamp.toLocaleDateString()}</span>
+                        <span>{new Date(transaction.created_at).toLocaleDateString()}</span>
                         <span>•</span>
-                        <span>{transaction.timestamp.toLocaleTimeString()}</span>
+                        <span>{new Date(transaction.created_at).toLocaleTimeString()}</span>
                         {transaction.paymentMethod && (
                           <>
                             <span>•</span>
-                            <span>{transaction.paymentMethod}</span>
+                            <span>{transaction.payment_method}</span>
                           </>
                         )}
                       </div>
@@ -146,11 +156,11 @@ export default function TransactionHistory({ onBack }: TransactionHistoryProps) 
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-slate-900">
-                      {transaction.amount} {transaction.currency}
+                      {transaction.from_amount} {transaction.from_currency}
                     </p>
-                    {transaction.toCurrency && transaction.toAmount && (
+                    {transaction.to_currency && transaction.to_amount && (
                       <p className="text-sm text-slate-600">
-                        → {transaction.toAmount.toLocaleString()} {transaction.toCurrency}
+                        → {transaction.to_amount.toLocaleString()} {transaction.to_currency}
                       </p>
                     )}
                   </div>

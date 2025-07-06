@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   ArrowLeft, 
   Users, 
@@ -11,7 +11,8 @@ import {
   Settings
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useTransactions } from '../../contexts/TransactionContext';
+import { apiClient } from '../../lib/api';
+import type { Transaction, User } from '../../lib/supabase';
 
 interface AdminDashboardProps {
   onBack: () => void;
@@ -19,8 +20,54 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ onBack }: AdminDashboardProps) {
   const { user } = useAuth();
-  const { transactions } = useTransactions();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'users' | 'transactions' | 'settings'>('overview');
+
+  useEffect(() => {
+    if (user?.role === 'admin') {
+      loadAdminData();
+    }
+  }, [user]);
+
+  const loadAdminData = async () => {
+    try {
+      setLoading(true);
+      const [transactionsRes, usersRes, statsRes] = await Promise.all([
+        apiClient.getAdminTransactions({ limit: 50 }),
+        apiClient.getAdminUsers({ limit: 50 }),
+        apiClient.getAdminStats()
+      ]);
+      
+      setTransactions(transactionsRes.transactions || []);
+      setUsers(usersRes.users || []);
+      setStats(statsRes);
+    } catch (error) {
+      console.error('Load admin data error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUpdateTransactionStatus = async (transactionId: string, status: string, notes?: string) => {
+    try {
+      await apiClient.updateTransactionStatus(transactionId, status, notes);
+      await loadAdminData(); // Refresh data
+    } catch (error) {
+      console.error('Update transaction status error:', error);
+    }
+  };
+
+  const handleUpdateUserKyc = async (userId: string, kycStatus: string, notes?: string) => {
+    try {
+      await apiClient.updateUserKyc(userId, kycStatus, notes);
+      await loadAdminData(); // Refresh data
+    } catch (error) {
+      console.error('Update user KYC error:', error);
+    }
+  };
 
   if (!user || user.role !== 'admin') {
     return (
@@ -34,22 +81,16 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
     );
   }
 
-  const stats = {
-    totalUsers: 1247,
-    activeUsers: 892,
-    pendingKyc: 23,
-    totalVolume: 2450000,
-    todayVolume: 45600,
-    completedTransactions: transactions.filter(t => t.status === 'completed').length,
-    pendingTransactions: transactions.filter(t => t.status === 'pending').length
-  };
-
-  const mockUsers = [
-    { id: '1', phone: '+254700000001', country: 'kenya', kycStatus: 'pending', balance: 1250 },
-    { id: '2', phone: '+256700000002', country: 'uganda', kycStatus: 'approved', balance: 890 },
-    { id: '3', phone: '+255700000003', country: 'tanzania', kycStatus: 'pending', balance: 2100 },
-    { id: '4', phone: '+252700000004', country: 'somalia', kycStatus: 'approved', balance: 1650 }
-  ];
+  if (loading) {
+    return (
+      <div className="max-w-2xl mx-auto p-4">
+        <div className="bg-white rounded-xl p-6 text-center">
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading admin dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto p-4">
@@ -109,7 +150,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-600 text-sm font-medium">Total Users</p>
-                      <p className="text-2xl font-bold text-blue-900">{stats.totalUsers.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-blue-900">{stats?.users?.total || 0}</p>
                     </div>
                     <Users className="w-8 h-8 text-blue-600" />
                   </div>
@@ -119,7 +160,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-600 text-sm font-medium">Active Users</p>
-                      <p className="text-2xl font-bold text-green-900">{stats.activeUsers.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-green-900">{stats?.users?.active || 0}</p>
                     </div>
                     <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
@@ -129,7 +170,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-yellow-600 text-sm font-medium">Pending KYC</p>
-                      <p className="text-2xl font-bold text-yellow-900">{stats.pendingKyc}</p>
+                      <p className="text-2xl font-bold text-yellow-900">{stats?.users?.pending_kyc || 0}</p>
                     </div>
                     <AlertCircle className="w-8 h-8 text-yellow-600" />
                   </div>
@@ -139,7 +180,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-600 text-sm font-medium">Total Volume</p>
-                      <p className="text-2xl font-bold text-purple-900">${stats.totalVolume.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-purple-900">${(stats?.transactions?.total_volume_30d || 0).toLocaleString()}</p>
                     </div>
                     <DollarSign className="w-8 h-8 text-purple-600" />
                   </div>
@@ -210,32 +251,35 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200">
-                      {mockUsers.map((user) => (
-                        <tr key={user.id} className="hover:bg-slate-50">
+                      {users.slice(0, 10).map((userData) => (
+                        <tr key={userData.id} className="hover:bg-slate-50">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="font-medium text-slate-900">{user.phone}</div>
+                            <div className="font-medium text-slate-900">{userData.phone}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <span className="capitalize text-slate-600">{user.country}</span>
+                            <span className="capitalize text-slate-600">{userData.country}</span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              user.kycStatus === 'approved' ? 'bg-green-100 text-green-800' :
-                              user.kycStatus === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                              userData.kyc_status === 'approved' ? 'bg-green-100 text-green-800' :
+                              userData.kyc_status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
                               'bg-red-100 text-red-800'
                             }`}>
-                              {user.kycStatus}
+                              {userData.kyc_status}
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-900">
-                            ${user.balance.toLocaleString()}
+                            N/A
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button className="text-blue-600 hover:text-blue-900 mr-3">
                               View
                             </button>
-                            {user.kycStatus === 'pending' && (
-                              <button className="text-green-600 hover:text-green-900">
+                            {userData.kyc_status === 'pending' && (
+                              <button 
+                                onClick={() => handleUpdateUserKyc(userData.id, 'approved')}
+                                className="text-green-600 hover:text-green-900"
+                              >
                                 Approve
                               </button>
                             )}
@@ -265,7 +309,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-600 text-sm font-medium">Completed</p>
-                      <p className="text-xl font-bold text-green-900">{stats.completedTransactions}</p>
+                      <p className="text-xl font-bold text-green-900">{stats?.transactions?.completed || 0}</p>
                     </div>
                     <CheckCircle className="w-6 h-6 text-green-600" />
                   </div>
@@ -275,7 +319,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-yellow-600 text-sm font-medium">Pending</p>
-                      <p className="text-xl font-bold text-yellow-900">{stats.pendingTransactions}</p>
+                      <p className="text-xl font-bold text-yellow-900">{stats?.transactions?.pending || 0}</p>
                     </div>
                     <AlertCircle className="w-6 h-6 text-yellow-600" />
                   </div>
@@ -285,7 +329,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-600 text-sm font-medium">Today's Volume</p>
-                      <p className="text-xl font-bold text-blue-900">${stats.todayVolume.toLocaleString()}</p>
+                      <p className="text-xl font-bold text-blue-900">${(stats?.transactions?.total_volume_30d || 0).toLocaleString()}</p>
                     </div>
                     <TrendingUp className="w-6 h-6 text-blue-600" />
                   </div>
@@ -329,7 +373,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                             <span className="capitalize text-slate-600">{transaction.type}</span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-900">
-                            {transaction.amount} {transaction.currency}
+                            {transaction.from_amount} {transaction.from_currency}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -341,14 +385,17 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
                             </span>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-slate-600">
-                            {transaction.timestamp.toLocaleDateString()}
+                            {new Date(transaction.created_at).toLocaleDateString()}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <button className="text-blue-600 hover:text-blue-900 mr-3">
                               View
                             </button>
                             {transaction.status === 'pending' && (
-                              <button className="text-green-600 hover:text-green-900">
+                              <button 
+                                onClick={() => handleUpdateTransactionStatus(transaction.id, 'completed')}
+                                className="text-green-600 hover:text-green-900"
+                              >
                                 Approve
                               </button>
                             )}
