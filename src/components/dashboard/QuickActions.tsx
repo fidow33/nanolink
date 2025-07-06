@@ -46,37 +46,37 @@ export default function QuickActions({ onNavigate }: QuickActionsProps) {
   ];
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-lg border border-slate-200">
+    <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50">
       <div className="flex items-center space-x-2 mb-6">
-        <h2 className="text-xl font-bold text-slate-900">Quick Actions</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Quick Actions</h2>
         <Sparkles className="w-5 h-5 text-yellow-500" />
       </div>
       
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-6">
         {actions.map((action) => (
           <button
             key={action.id}
             onClick={() => onNavigate(action.id)}
-            className="group relative p-6 rounded-2xl border border-slate-200 hover:border-slate-300 hover:shadow-xl transition-all duration-300 text-left active:scale-95 overflow-hidden"
+            className="group relative p-8 rounded-2xl border border-slate-200/60 hover:border-slate-300 hover:shadow-2xl transition-all duration-300 text-left active:scale-95 overflow-hidden bg-white/50 hover:bg-white/80"
           >
             {/* Background Gradient on Hover */}
-            <div className={`absolute inset-0 bg-gradient-to-r ${action.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
+            <div className={`absolute inset-0 bg-gradient-to-r ${action.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
             
             {/* Popular Badge */}
             {action.popular && (
-              <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+              <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                 Popular
               </div>
             )}
             
-            <div className={`bg-gradient-to-r ${action.gradient} w-14 h-14 rounded-2xl flex items-center justify-center ${action.textColor} mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+            <div className={`bg-gradient-to-r ${action.gradient} w-16 h-16 rounded-2xl flex items-center justify-center ${action.textColor} mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl`}>
               {action.icon}
             </div>
             
-            <h3 className="font-bold text-slate-900 mb-2 group-hover:text-slate-700 transition-colors">
+            <h3 className="font-bold text-slate-900 mb-3 group-hover:text-slate-700 transition-colors text-lg">
               {action.title}
             </h3>
-            <p className="text-sm text-slate-600 leading-relaxed group-hover:text-slate-500 transition-colors">
+            <p className="text-sm text-slate-600 leading-relaxed group-hover:text-slate-500 transition-colors font-medium">
               {action.description}
             </p>
           </button>

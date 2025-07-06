@@ -35,12 +35,12 @@ export default function RecentTransactions({ transactions, onViewAll }: RecentTr
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+    <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl border border-white/50">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-lg font-semibold text-slate-900">Recent Activity</h2>
+        <h2 className="text-2xl font-bold text-slate-900">Recent Activity</h2>
         <button
           onClick={onViewAll}
-          className="flex items-center space-x-1 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors active:scale-95"
+          className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 font-bold text-sm transition-all duration-200 active:scale-95 bg-blue-50 px-4 py-2 rounded-xl hover:bg-blue-100"
         >
           <span>View All</span>
           <ArrowRight className="w-4 h-4" />
@@ -48,26 +48,26 @@ export default function RecentTransactions({ transactions, onViewAll }: RecentTr
       </div>
 
       {transactions.length === 0 ? (
-        <div className="text-center py-8 text-slate-500">
-          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="text-center py-12 text-slate-500">
+          <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Send className="w-8 h-8 opacity-50" />
           </div>
-          <p className="font-medium mb-1">No transactions yet</p>
-          <p className="text-sm">Your activity will appear here</p>
+          <p className="font-bold mb-2 text-lg">No transactions yet</p>
+          <p className="text-sm font-medium">Your activity will appear here</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {transactions.map((transaction) => (
-            <div key={transaction.id} className="flex items-center justify-between p-4 rounded-xl hover:bg-slate-50 transition-colors">
+            <div key={transaction.id} className="flex items-center justify-between p-5 rounded-2xl hover:bg-slate-50/80 transition-all duration-200 border border-slate-100 hover:border-slate-200 hover:shadow-lg">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center shadow-sm">
                   {getTransactionIcon(transaction.type)}
                 </div>
                 <div className="flex-1">
-                  <p className="font-medium text-slate-900 capitalize text-sm">
+                  <p className="font-bold text-slate-900 capitalize">
                     {transaction.type} {transaction.currency}
                   </p>
-                  <div className="flex items-center space-x-2 text-xs text-slate-600">
+                  <div className="flex items-center space-x-2 text-xs text-slate-600 font-medium">
                     <span>{transaction.timestamp.toLocaleDateString()}</span>
                     {transaction.paymentMethod && (
                       <>
@@ -79,10 +79,10 @@ export default function RecentTransactions({ transactions, onViewAll }: RecentTr
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-semibold text-slate-900 text-sm">
+                <p className="font-bold text-slate-900">
                   {transaction.amount} {transaction.currency}
                 </p>
-                <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(transaction.status)}`}>
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${getStatusColor(transaction.status)}`}>
                   {transaction.status}
                 </span>
               </div>
