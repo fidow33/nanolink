@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, ArrowUpRight, Shield, Clock, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowLeft, ArrowUpRight, Shield } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useTransactions } from '../../contexts/TransactionContext';
 
