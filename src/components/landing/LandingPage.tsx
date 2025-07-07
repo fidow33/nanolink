@@ -12,7 +12,8 @@ import {
   Play,
   BarChart3,
   Users,
-  Clock
+  Clock,
+  Download
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -24,7 +25,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
     {
       icon: <Zap className="w-6 h-6" />,
       title: "Lightning Fast",
-      description: "Execute trades in milliseconds with our advanced matching engine"
+      description: "Convert USDC and USDT to mobile money in seconds"
     },
     {
       icon: <Shield className="w-6 h-6" />,
@@ -32,31 +33,29 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       description: "Multi-layer security with cold storage and insurance protection"
     },
     {
-      icon: <BarChart3 className="w-6 h-6" />,
-      title: "Advanced Trading",
-      description: "Professional tools for spot, margin, and derivatives trading"
+      icon: <Smartphone className="w-6 h-6" />,
+      title: "Mobile Money Integration",
+      description: "Direct integration with M-Pesa, MTN, Vodacom, and EVC Plus"
     },
     {
       icon: <Globe className="w-6 h-6" />,
-      title: "Global Access",
-      description: "Trade 24/7 from anywhere with our mobile and web platforms"
+      title: "East Africa Coverage",
+      description: "Available across Kenya, Uganda, Tanzania, and Somalia"
     }
   ];
 
   const stats = [
-    { number: "50K+", label: "Active Traders" },
-    { number: "$2B+", label: "24h Volume" },
+    { number: "50K+", label: "Active Users" },
+    { number: "$2M+", label: "Daily Volume" },
     { number: "4", label: "Countries" },
-    { number: "200+", label: "Trading Pairs" }
+    { number: "99.9%", label: "Uptime" }
   ];
 
-  const cryptos = [
-    { symbol: 'BTC', name: 'Bitcoin', price: '$45,230', change: '+2.4%', positive: true },
-    { symbol: 'ETH', name: 'Ethereum', price: '$2,890', change: '+1.8%', positive: true },
-    { symbol: 'USDT', name: 'Tether', price: '$1.00', change: '0.0%', positive: true },
-    { symbol: 'BNB', name: 'BNB', price: '$312', change: '-0.5%', positive: false },
-    { symbol: 'SOL', name: 'Solana', price: '$98', change: '+5.2%', positive: true },
-    { symbol: 'ADA', name: 'Cardano', price: '$0.52', change: '+3.1%', positive: true }
+  const supportedCurrencies = [
+    { crypto: 'USDC', name: 'USD Coin', local: 'KES', country: 'Kenya', flag: '🇰🇪' },
+    { crypto: 'USDT', name: 'Tether', local: 'UGX', country: 'Uganda', flag: '🇺🇬' },
+    { crypto: 'USDC', name: 'USD Coin', local: 'TZS', country: 'Tanzania', flag: '🇹🇿' },
+    { crypto: 'USDT', name: 'Tether', local: 'SOS', country: 'Somalia', flag: '🇸🇴' }
   ];
 
   return (
@@ -69,18 +68,18 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                 <img 
                   src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
-                  alt="NanoLink Logo" 
+                  alt="Taraan Logo" 
                   className="w-6 h-6 object-contain brightness-0 invert"
                 />
               </div>
-              <span className="text-xl font-bold">NanoLink</span>
+              <span className="text-xl font-bold">Taraan</span>
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Markets</a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Trade</a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Earn</a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">Support</a>
+              <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
+              <a href="#how-it-works" className="text-gray-300 hover:text-white transition-colors">How It Works</a>
+              <a href="#countries" className="text-gray-300 hover:text-white transition-colors">Countries</a>
+              <a href="#support" className="text-gray-300 hover:text-white transition-colors">Support</a>
             </nav>
             
             <div className="flex items-center space-x-4">
@@ -105,91 +104,98 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             <div>
               <div className="inline-flex items-center space-x-2 bg-gray-800 text-gray-300 px-4 py-2 rounded-full text-sm mb-6">
                 <Award className="w-4 h-4" />
-                <span>Trusted by 50,000+ traders</span>
+                <span>Trusted by 50,000+ users across East Africa</span>
               </div>
               
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                Trade Crypto
+                Your Easy Bridge from
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                  Like a Pro
+                  Mobile Money to Digital Currency
                 </span>
               </h1>
               
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                Advanced trading platform for cryptocurrency. Trade spot, margin, and derivatives 
-                with institutional-grade tools and lightning-fast execution.
+                Taraan App allows you to easily convert USDC and USDT to local mobile money currencies – fast and secure
               </p>
 
               <div className="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
-                <button
-                  onClick={onGetStarted}
-                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2"
-                >
-                  <span>Start Trading</span>
-                  <ArrowRight className="w-5 h-5" />
+                <button className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center space-x-2">
+                  <Download className="w-5 h-5" />
+                  <span>Download App</span>
                 </button>
                 
-                <button className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
-                  <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center">
-                    <Play className="w-5 h-5 ml-1" />
-                  </div>
-                  <span className="font-medium">Watch Demo</span>
+                <button
+                  onClick={onGetStarted}
+                  className="bg-white text-gray-900 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all duration-200 flex items-center space-x-2"
+                >
+                  <span>Sign Up Now</span>
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
 
               <div className="flex items-center space-x-6 text-sm text-gray-400">
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>No KYC required</span>
+                  <span>No hidden fees</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <CheckCircle className="w-4 h-4 text-green-500" />
-                  <span>Instant deposits</span>
+                  <span>Instant transfers</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-green-500" />
+                  <span>24/7 support</span>
                 </div>
               </div>
             </div>
 
-            {/* Trading Interface Preview */}
+            {/* App Preview */}
             <div className="relative">
               <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-semibold">Live Markets</h3>
+                  <h3 className="text-lg font-semibold">Convert Instantly</h3>
                   <div className="flex items-center space-x-2 text-sm text-gray-400">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span>Live</span>
+                    <span>Live Rates</span>
                   </div>
                 </div>
                 
-                <div className="space-y-3">
-                  {cryptos.slice(0, 4).map((crypto) => (
-                    <div key={crypto.symbol} className="flex items-center justify-between p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full flex items-center justify-center text-sm font-bold">
-                          {crypto.symbol[0]}
-                        </div>
-                        <div>
-                          <p className="font-medium">{crypto.symbol}</p>
-                          <p className="text-xs text-gray-400">{crypto.name}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-medium">{crypto.price}</p>
-                        <p className={`text-xs ${crypto.positive ? 'text-green-500' : 'text-red-500'}`}>
-                          {crypto.change}
-                        </p>
-                      </div>
+                <div className="space-y-4">
+                  <div className="bg-gray-800 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-400">From</span>
+                      <span className="text-sm text-blue-400">USDT</span>
                     </div>
-                  ))}
+                    <div className="text-2xl font-bold">100.00</div>
+                  </div>
+                  
+                  <div className="flex justify-center">
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                      <ArrowRight className="w-4 h-4 rotate-90" />
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-800 rounded-xl p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm text-gray-400">To</span>
+                      <span className="text-sm text-green-400">KES</span>
+                    </div>
+                    <div className="text-2xl font-bold">14,600</div>
+                  </div>
+                  
+                  <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-semibold">
+                    Convert Now
+                  </button>
                 </div>
               </div>
               
               {/* Floating elements */}
               <div className="absolute -top-4 -right-4 bg-green-500 text-black px-3 py-1 rounded-lg text-sm font-bold">
-                +24.5%
+                Instant
               </div>
               <div className="absolute -bottom-4 -left-4 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm font-bold">
-                $2.1B Volume
+                Secure
               </div>
             </div>
           </div>
@@ -214,15 +220,49 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6">
+      {/* Supported Currencies */}
+      <section id="countries" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Why Choose NanoLink?
+              Supported Across East Africa
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Built for traders who demand speed, security, and sophisticated tools
+              Convert your USDC and USDT to local currencies in 4 countries
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {supportedCurrencies.map((currency, index) => (
+              <div key={index} className="bg-gray-900 rounded-xl p-6 border border-gray-800 hover:border-gray-700 transition-colors">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">{currency.flag}</div>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {currency.country}
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-400">{currency.crypto}</span>
+                      <span className="text-white font-medium">→</span>
+                      <span className="text-blue-400">{currency.local}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 px-6 bg-gray-900/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Why Choose Taraan?
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              The fastest and most secure way to bridge crypto and mobile money
             </p>
           </div>
 
@@ -244,98 +284,39 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         </div>
       </section>
 
-      {/* Trading Tools Section */}
-      <section className="py-20 px-6 bg-gray-900/30">
+      {/* How It Works */}
+      <section id="how-it-works" className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-white mb-6">
-                Professional Trading Tools
-              </h2>
-              <p className="text-xl text-gray-400 mb-8">
-                Access advanced charting, real-time data, and institutional-grade 
-                order types to maximize your trading potential.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                {[
-                  "Advanced order types (Stop, Limit, OCO)",
-                  "Real-time market data and charts",
-                  "Portfolio analytics and P&L tracking",
-                  "API access for algorithmic trading"
-                ].map((item, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-gray-300">{item}</span>
-                  </div>
-                ))}
-              </div>
-              
-              <button
-                onClick={onGetStarted}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200"
-              >
-                Explore Trading Tools
-              </button>
-            </div>
-            
-            <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold">BTC/USDT</h3>
-                <div className="text-green-500 text-sm font-medium">+2.4%</div>
-              </div>
-              
-              <div className="text-2xl font-bold mb-4">$45,230.50</div>
-              
-              <div className="h-32 bg-gradient-to-r from-green-500/20 to-blue-500/20 rounded-lg mb-4 flex items-end justify-center">
-                <div className="text-sm text-gray-400">Chart visualization</div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <button className="bg-green-600 text-white py-2 rounded-lg font-medium hover:bg-green-700 transition-colors">
-                  Buy BTC
-                </button>
-                <button className="bg-red-600 text-white py-2 rounded-lg font-medium hover:bg-red-700 transition-colors">
-                  Sell BTC
-                </button>
-              </div>
-            </div>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              How It Works
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Convert your crypto to mobile money in just 3 simple steps
+            </p>
           </div>
-        </div>
-      </section>
 
-      {/* Security Section */}
-      <section className="py-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Security First
-          </h2>
-          <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-            Your assets are protected by industry-leading security measures 
-            and insurance coverage.
-          </p>
-          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                icon: <Shield className="w-8 h-8" />,
-                title: "Cold Storage",
-                description: "95% of funds stored offline in secure vaults"
+                step: "1",
+                title: "Connect Your Wallet",
+                description: "Link your crypto wallet containing USDC or USDT"
               },
               {
-                icon: <Users className="w-8 h-8" />,
-                title: "Multi-Sig",
-                description: "Multi-signature wallets for enhanced security"
+                step: "2",
+                title: "Choose Amount & Currency",
+                description: "Select how much to convert and your local mobile money"
               },
               {
-                icon: <Clock className="w-8 h-8" />,
-                title: "24/7 Monitoring",
-                description: "Round-the-clock security monitoring and alerts"
+                step: "3",
+                title: "Receive Instantly",
+                description: "Get money in your mobile wallet within seconds"
               }
             ].map((item, index) => (
-              <div key={index} className="bg-gray-900 rounded-xl p-8 border border-gray-800">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white mx-auto mb-4">
-                  {item.icon}
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+                  {item.step}
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-2">
                   {item.title}
@@ -353,25 +334,30 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
       <section className="py-20 px-6 bg-gradient-to-r from-blue-600 to-purple-700">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Start Trading Today
+            Start Converting Today
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of traders who trust NanoLink for their crypto trading needs.
+            Join thousands of users who trust Taraan for their crypto to mobile money needs.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <button
-              onClick={onGetStarted}
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors flex items-center space-x-2"
-            >
-              <span>Create Account</span>
-              <ArrowRight className="w-5 h-5" />
+            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors flex items-center space-x-2">
+              <Download className="w-5 h-5" />
+              <span>Download App</span>
             </button>
             
-            <div className="flex items-center space-x-2 text-blue-100">
-              <CheckCircle className="w-5 h-5" />
-              <span className="font-medium">Free to start</span>
-            </div>
+            <button
+              onClick={onGetStarted}
+              className="bg-black/20 text-white border-2 border-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-black/30 transition-colors flex items-center space-x-2"
+            >
+              <span>Sign Up Now</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="flex items-center justify-center space-x-2 text-blue-100 mt-6">
+            <CheckCircle className="w-5 h-5" />
+            <span className="font-medium">Free to start • No setup fees</span>
           </div>
         </div>
       </section>
@@ -385,25 +371,25 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <img 
                     src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
-                    alt="NanoLink Logo" 
+                    alt="Taraan Logo" 
                     className="w-6 h-6 object-contain brightness-0 invert"
                   />
                 </div>
-                <span className="text-xl font-bold text-white">NanoLink</span>
+                <span className="text-xl font-bold text-white">Taraan</span>
               </div>
               <p className="text-gray-400 leading-relaxed max-w-md">
-                The most advanced cryptocurrency trading platform in East Africa. 
-                Trade with confidence and security.
+                The easiest way to convert USDC and USDT to mobile money across East Africa. 
+                Fast, secure, and reliable.
               </p>
             </div>
             
             <div>
-              <h4 className="font-semibold text-white mb-4">Trading</h4>
+              <h4 className="font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Spot Trading</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Margin Trading</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Futures</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Options</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Convert Crypto</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Mobile Money</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Rates</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
               </ul>
             </div>
             
@@ -411,15 +397,15 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <h4 className="font-semibold text-white mb-4">Support</h4>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Docs</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Fees</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Status</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API</a></li>
               </ul>
             </div>
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 NanoLink. All rights reserved. Licensed and regulated across East Africa.</p>
+            <p>&copy; 2024 Taraan. All rights reserved. Licensed and regulated across East Africa.</p>
           </div>
         </div>
       </footer>
