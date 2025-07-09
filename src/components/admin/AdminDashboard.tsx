@@ -104,7 +104,7 @@ export default function AdminDashboard({ onBack }: AdminDashboardProps) {
         </button>
         <div className="flex items-center space-x-3">
           <img 
-            src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+            src="/nanolink-logo.png" 
             alt="NanoLink Logo" 
             className="w-8 h-8 object-contain"
           />
