@@ -1,4 +1,8 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || (
+  import.meta.env.PROD 
+    ? 'https://your-backend-url.com/api' 
+    : 'http://localhost:3001/api'
+);
 
 class ApiClient {
   private token: string | null = null;

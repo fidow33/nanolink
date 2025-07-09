@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { apiClient } from '../lib/api';
+import { supabase } from '../lib/supabase';
 import type { User, Wallet } from '../lib/supabase';
 
 interface AuthUser extends User {
