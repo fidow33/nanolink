@@ -405,7 +405,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Taraan. All rights reserved. Licensed and regulated across East Africa.</p>
+            <p>&copy; 2024 NanoLink. All rights reserved. Licensed and regulated across East Africa.</p>
           </div>
         </div>
       </footer>
