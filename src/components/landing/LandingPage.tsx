@@ -68,11 +68,11 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                 <img 
                   src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
-                  alt="Taraan Logo" 
+                  alt="nanoLink Logo" 
                   className="w-6 h-6 object-contain brightness-0 invert"
                 />
               </div>
-              <span className="text-xl font-bold">Taraan</span>
+              <span className="text-xl font-bold">nanoLink</span>
             </div>
             
             <nav className="hidden md:flex items-center space-x-8">
@@ -116,7 +116,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               </h1>
               
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                Taraan App allows you to easily convert USDC and USDT to local mobile money currencies – fast and secure
+                nanoLink App allows you to easily convert USDC and USDT to local mobile money currencies – fast and secure
               </p>
 
               <div className="flex flex-col sm:flex-row items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
@@ -259,7 +259,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Why Choose Taraan?
+              Why Choose nanoLink?
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               The fastest and most secure way to bridge crypto and mobile money
@@ -337,7 +337,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             Start Converting Today
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            Join thousands of users who trust Taraan for their crypto to mobile money needs.
+            Join thousands of users who trust nanoLink for their crypto to mobile money needs.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
@@ -371,11 +371,11 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <img 
                     src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
-                    alt="Taraan Logo" 
+                    alt="nanoLink Logo" 
                     className="w-6 h-6 object-contain brightness-0 invert"
                   />
                 </div>
-                <span className="text-xl font-bold text-white">Taraan</span>
+                <span className="text-xl font-bold text-white">nanoLink</span>
               </div>
               <p className="text-gray-400 leading-relaxed max-w-md">
                 The easiest way to convert USDC and USDT to mobile money across East Africa. 
