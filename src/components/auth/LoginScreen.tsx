@@ -124,7 +124,7 @@ export default function LoginScreen() {
         <div className="text-center mb-8">
           <div className="bg-white p-6 rounded-3xl inline-block mb-6 shadow-2xl">
             <img 
-              src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+              src="/nanolink-logo.png" 
               alt="NanoLink Logo" 
               className="w-16 h-16 mx-auto object-contain"
             />
@@ -462,7 +462,7 @@ export default function LoginScreen() {
             <div className="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
               <div className="w-6 h-6 bg-white rounded-md flex items-center justify-center">
                 <img 
-                  src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                  src="/nanolink-logo.png" 
                   alt="NanoLink" 
                   className="w-4 h-4 object-contain"
                 />

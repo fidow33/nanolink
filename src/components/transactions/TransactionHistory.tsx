@@ -111,7 +111,7 @@ export default function TransactionHistory({ onBack }: TransactionHistoryProps) 
           <div className="text-center py-12">
             <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <img 
-                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                src="/nanolink-logo.png" 
                 alt="NanoLink" 
                 className="w-8 h-8 object-contain opacity-50"
               />

@@ -42,7 +42,7 @@ export default function Navigation({ currentView, onNavigate, isAdmin }: Navigat
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-3 rounded-xl">
               <img 
-                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                src="/nanolink-logo.png" 
                 alt="NanoLink Logo" 
                 className="w-6 h-6 object-contain brightness-0 invert"
               />

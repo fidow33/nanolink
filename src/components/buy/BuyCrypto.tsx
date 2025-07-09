@@ -327,7 +327,7 @@ export default function BuyCrypto({ onBack }: BuyCryptoProps) {
           <div className="text-center py-12 space-y-6">
             <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
               <img 
-                src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+                src="/nanolink-logo.png" 
                 alt="NanoLink" 
                 className="w-10 h-10 object-contain animate-pulse"
               />

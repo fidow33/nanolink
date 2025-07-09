@@ -54,7 +54,7 @@ export default function Wallet({ onBack }: WalletProps) {
           </div>
           <div className="p-3 bg-white/20 rounded-2xl backdrop-blur-sm">
             <img 
-              src="/MAIN_-_NANO_STRATEGY_LOGO.pdf__1_-removebg-preview.png" 
+              src="/nanolink-logo.png" 
               alt="NanoLink" 
               className="w-8 h-8 object-contain brightness-0 invert"
             />
